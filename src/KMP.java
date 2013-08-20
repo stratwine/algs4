@@ -47,22 +47,36 @@ public class KMP {
         
         dfa = new int[R][M];  //R possible inputs, M possible states 
         
-        //dfa[65][2] means, if I am currently in State2 and the incoming character is A, what state should this go to ?
+        //dfa[65][2] means, if I am currently in State 2 and the incoming character is A, what state should this go to ?
         //note that dfa is built based on the pattern
         
         dfa[pat.charAt(0)][0] = 1; //I am in the very first state (initial state) and receive 
-                                   //the first match. Go to the next state.
+                                   //the first pattern character. Go to the next state.
         
-        for (int X = 0, j = 1; j < M; j++) {
-            for (int c = 0; c < R; c++) 
+          
+        for (int X = 0, j = 1; j < M; j++) {  
+        	   								//Start with fallback state X=0 initially
+        	 								//Have to update missing transitions for states 1 to the end of pattern
+        									//For j=0, dfa[pat.charAt(0)][0] = 1; takes care of success transition and the rest default to 0.
+        									//So we don't worry about 0th state, in this for loop
+           
+        	for (int c = 0; c < R; c++) 
             { dfa[c][j] = dfa[c][X];  		// Copy mismatch cases. 
-            } 
-            							   // Copy the whole column at X, to the current column position J
-            
-            dfa[pat.charAt(j)][j] = j+1;   //For matching cases, update the cell values
-            							   //The cell value would be currentStateNo+1. So j+1
-            
-            X = dfa[pat.charAt(j)][X];     // Update restart state. 
+            } 								// Copy the whole column at X, to the current column position j
+            							   
+        	/*Override for the matching cases
+        	States: 0-1-2-3
+        	Pattern:"abc" a at 0 transitions to 1, b at 1 transitions to 2, c at 2 transitions to 3
+        	pat.chatAt(j) at state j should trigger a transition to state j+1
+        	 */
+        	
+        	dfa[pat.charAt(j)][j] = j+1;    //For matching cases, update the cell values
+            							    //The cell value would be currentStateNo+1. So j+1
+            								
+        							
+        									//If I had, received the same character at the fallback state, where would I have gone ? 
+        									//That's the new fallback state.
+            X = dfa[pat.charAt(j)][X];      // Update restart state. 
         } 
     } 
 
@@ -92,7 +106,9 @@ public class KMP {
         int M = pat.length();
         int N = txt.length();
         int i, j;
-        for (i = 0, j = 0; i < N && j < M; i++) {
+        for (i = 0, j = 0; i < N && j < M; i++) { 
+        								//Start from 0 as text position to txt.length()
+        								//If you ever reach j=M, you have found a match, so stop
             j = dfa[txt.charAt(i)][j];
         }
         if (j == M) return i - M;    // found

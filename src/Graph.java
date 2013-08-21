@@ -56,7 +56,11 @@ public class Graph {
     private int E;
     private Bag<Integer>[] adj; // the array subscript refers to the vertex number.
     							// the Bag<Integer> contained in the location, consists of edges adjacent to the vertex
-    
+    							// In effect, this forms an adjacency Bag 
+    							//(not very different an array of LinkedList | array of ArrayList)
+    							// Infact, Bag is itself implemented with a self referential next node - making it a linked-list
+    							//It differs from linked list in that, it does not allow to remove. 
+    							// Inserts always at head. (this implementation)
    /**
      * Create an empty graph with V vertices.
      * @throws java.lang.IllegalArgumentException if V < 0

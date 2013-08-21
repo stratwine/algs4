@@ -121,6 +121,11 @@ public class Bag<Item> implements Iterable<Item> {
         return true;
     } 
 
+    /*
+     * Notice how an iterator is implemented for the Bag
+     * Eliminates ugly linked list traversal all over
+     * Use it just like any other data structure in the for-each loop 
+     */
 
    /**
      * Return an iterator that iterates over the items in the bag.

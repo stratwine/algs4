@@ -27,9 +27,16 @@ import java.util.Arrays;
 public class BinarySearch {
 
     // precondition: array a[] is sorted
+	//Iterative version of search: Returns the index of the element found. Otherwise -1
     public static int rank(int key, int[] a) {
         int lo = 0;
         int hi = a.length - 1;
+        
+        
+        /* How to make an iterative version?
+         * Update either of left or right pointers based on data value
+         * 
+         */
         while (lo <= hi) {
             // Key is in a[lo..hi] or not present.
             int mid = lo + (hi - lo) / 2;

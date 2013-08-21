@@ -24,31 +24,53 @@
 public class Merge {
 
     // stably merge a[lo .. mid] with a[mid+1 .. hi] using aux[lo .. hi]
+	// note: how a generic Comparable[] is passed instead of int[] etc
     public static void merge(Comparable[] a, Comparable[] aux, int lo, int mid, int hi) {
 
         // precondition: a[lo .. mid] and a[mid+1 .. hi] are sorted subarrays
         assert isSorted(a, lo, mid);
         assert isSorted(a, mid+1, hi);
 
-        // copy to aux[]
+        /* low points to 1 and high points to 6. This is only a section of the real array 
+        say a[]= {1,3,7,2,4,6} with mid pointing to 7
+        copy aux {1,3,7,2,4,6}
+        copy to aux[]
+        */
+        
         for (int k = lo; k <= hi; k++) {
             aux[k] = a[k]; 
         }
 
         // merge back to a[]
+        
+        /* A pointer starts from the first half. (i)  Initialized to low
+         * Another pointer starts from the second half (j)  Initialized to mid+1
+         * These two pointers traverse through the aux array
+         * k is the filling pointer. So all assignments are to a[k], sequentially
+         * Naturally k is from low to high, as those are the positions to fill
+         * And again, obviously, this pointer works on the array to be filled: a[]
+         */
+        
+        /**
+         * The filling pointer is incremented by for loop. The rest are incremented as-and-when required
+         */
         int i = lo, j = mid+1;
         for (int k = lo; k <= hi; k++) {
-            if      (i > mid)              a[k] = aux[j++];
-            else if (j > hi)               a[k] = aux[i++];
-            else if (less(aux[j], aux[i])) a[k] = aux[j++];
-            else                           a[k] = aux[i++];
+            if      (i > mid)              a[k] = aux[j++]; // all the elements from the first half have been used up. Fill from second half
+            else if (j > hi)               a[k] = aux[i++]; // all the elements from second half have been used up. Fill from first half
+            else if (less(aux[j], aux[i])) a[k] = aux[j++]; // fill from the lesser of the two
+            else                           a[k] = aux[i++]; // fill from the lesser of the two
         }
 
         // postcondition: a[lo .. hi] is sorted
         assert isSorted(a, lo, hi);
     }
 
+    
     // mergesort a[lo..hi] using auxiliary array aux[lo..hi]
+    /**
+     * Return if there's any cross over
+     */
     private static void sort(Comparable[] a, Comparable[] aux, int lo, int hi) {
         if (hi <= lo) return;
         int mid = lo + (hi - lo) / 2;

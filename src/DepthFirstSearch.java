@@ -21,19 +21,19 @@ public class DepthFirstSearch {
     private boolean[] marked;    // marked[v] = is there an s-v path?
     private int count;           // number of vertices connected to s
 
-    // single source
+    // single source  (for multiple sources, have to iterate through marked[] array and call dfs from any unmarked position
     public DepthFirstSearch(Graph G, int s) {
         marked = new boolean[G.V()];
         dfs(G, s);
     }
 
     // depth first search from v
-    private void dfs(Graph G, int v) {
-        count++;
-        marked[v] = true;
-        for (int w : G.adj(v)) {
+    private void dfs(Graph G, int v) { //Given a graph and the vertex number
+        count++; // increment for every new dfs call. i.e for every unique connected vertex
+        marked[v] = true; // mark that vertex as visited (so as to not go into cycle)
+        for (int w : G.adj(v)) { //Go to the Bag<Integer> located at this array position.
             if (!marked[w]) {
-                dfs(G, w);
+                dfs(G, w); // Call dfs from those vertices
             }
         }
     }

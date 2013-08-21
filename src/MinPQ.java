@@ -34,6 +34,12 @@ import java.util.NoSuchElementException;
  *  For additional documentation, see <a href="http://algs4.cs.princeton.edu/24pq">Section 2.4</a> of
  *  <i>Algorithms, 4th Edition</i> by Robert Sedgewick and Kevin Wayne.
  */
+
+
+/**
+ * An awesome example for 'Templating'
+ * Depending upon creation, you could have a MinPQ<Integer> or MinPQ<Edge> or whatever
+ */
 public class MinPQ<Key> implements Iterable<Key> {
     private Key[] pq;                    // store items at indices 1 to N
     private int N;                       // number of items on priority queue
@@ -43,7 +49,7 @@ public class MinPQ<Key> implements Iterable<Key> {
      * Create an empty priority queue with the given initial capacity.
      */
     public MinPQ(int initCapacity) {
-        pq = (Key[]) new Object[initCapacity + 1];
+        pq = (Key[]) new Object[initCapacity + 1]; // Note: Don't think it can be new Key[]. So have to create Object[] and cast
         N = 0;
     }
 
@@ -114,6 +120,7 @@ public class MinPQ<Key> implements Iterable<Key> {
 
    /**
      * Add a new key to the priority queue.
+     * Insert at end and swim up to correct position
      */
     public void insert(Key x) {
         // double size of array if necessary
@@ -145,6 +152,11 @@ public class MinPQ<Key> implements Iterable<Key> {
     * Helper functions to restore the heap invariant.
     **********************************************************************/
 
+    /**
+     * Note: You cannot use operators for > and <
+     * We are writing a generic class. So use methods. Let methods in-turn use compare()
+     * If a[k/2]>a[k] exchange. Repeat this until k>1. Stop when a[k/2] is smaller than a[k]
+     */
     private void swim(int k) {
         while (k > 1 && greater(k/2, k)) {
             exch(k, k/2);
@@ -152,6 +164,10 @@ public class MinPQ<Key> implements Iterable<Key> {
         }
     }
 
+    /**
+     * If a[k] > a[2k] or a[2k+1], then exchange with the greater one. Repeat until 2k<=N or until both children are smaller
+     * @param k
+     */
     private void sink(int k) {
         while (2*k <= N) {
             int j = 2*k;

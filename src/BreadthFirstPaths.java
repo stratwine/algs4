@@ -34,8 +34,8 @@ public class BreadthFirstPaths {
 
     // single source
     public BreadthFirstPaths(Graph G, int s) {
-        marked = new boolean[G.V()];
-        distTo = new int[G.V()];
+        marked = new boolean[G.V()]; //Get the number of vertices. Create a marked[] with that size
+        distTo = new int[G.V()]; 
         edgeTo = new int[G.V()];
         bfs(G, s);
 
@@ -53,18 +53,24 @@ public class BreadthFirstPaths {
 
 
     // BFS from single soruce
+    /**
+     *  On each adjacent vertex, 
+     *     update the marked[w],edgeTo[w],distTo[w] and then add to queue
+     *     How do I trace back the path at the end ?
+     *     Take the edgesTo[searchedVertex] and go through it till end. That gives the path taken
+     */
     private void bfs(Graph G, int s) {
         Queue<Integer> q = new Queue<Integer>();
-        for (int v = 0; v < G.V(); v++) distTo[v] = INFINITY;
-        distTo[s] = 0;
+        for (int v = 0; v < G.V(); v++) distTo[v] = INFINITY; //initialize all distances as INFINITY
+        distTo[s] = 0; // well known, distance to itself is initialized with 0
         marked[s] = true;
         q.enqueue(s);
 
         while (!q.isEmpty()) {
             int v = q.dequeue();
-            for (int w : G.adj(v)) {
+            for (int w : G.adj(v)) { //returns a Bag<Integer>. But as for as for-loop is concerned, returns an Iterable
                 if (!marked[w]) {
-                    edgeTo[w] = v;
+                    edgeTo[w] = v; // how did I reach w ? by taking an edge from v to w edgesTo[w] gives the source taken to reach w
                     distTo[w] = distTo[v] + 1;
                     marked[w] = true;
                     q.enqueue(w);

@@ -43,10 +43,19 @@
  *  For additional documentation, see <a href="http://algs4.cs.princeton.edu/51undirected">Section 5.1</a> of
  *  <i>Algorithms, 4th Edition</i> by Robert Sedgewick and Kevin Wayne.
  */
+
+/**
+ * Here, a Graph is made by an array of Bag of edges
+ * Each Bag contains a set of connected edges
+ * Say countries in a continent are represented as a Graph.  (Ignore islands)
+ * Then we would have 7 bags. Connected countries are marked by edges
+ * There is no separate Vertex class
+ */
 public class Graph {
     private final int V;
     private int E;
-    private Bag<Integer>[] adj;
+    private Bag<Integer>[] adj; // the array subscript refers to the vertex number.
+    							// the Bag<Integer> contained in the location, consists of edges adjacent to the vertex
     
    /**
      * Create an empty graph with V vertices.
@@ -57,8 +66,12 @@ public class Graph {
         this.V = V;
         this.E = 0;
         adj = (Bag<Integer>[]) new Bag[V];
+        
+        /*
+         * For each vertex,create a bag to hold the adjacent vertices
+         */
         for (int v = 0; v < V; v++) {
-            adj[v] = new Bag<Integer>();
+            adj[v] = new Bag<Integer>(); 
         }
     }
 
@@ -123,15 +136,20 @@ public class Graph {
      * Add the undirected edge v-w to graph.
      * @throws java.lang.IndexOutOfBoundsException unless both 0 <= v < V and 0 <= w < V
      */
+    
+    /* Add edge between India and Nepal */
     public void addEdge(int v, int w) {
         if (v < 0 || v >= V) throw new IndexOutOfBoundsException();
         if (w < 0 || w >= V) throw new IndexOutOfBoundsException();
         E++;
-        adj[v].add(w);
-        adj[w].add(v);
-    }
+        adj[v].add(w); // Add Nepal as an adjacent country to India 
+        adj[w].add(v); // Add India as an adjacent country to Nepal
+    } 
 
-
+    //Can do a second invocation of the addEdge() method to add an edge between India and China
+    //So the bag corresponding to India, would contain both these countries (Nepal,China)
+    //Bag supports Iteration, so you can iterate
+    
    /**
      * Return the list of neighbors of vertex v as in Iterable.
      * @throws java.lang.IndexOutOfBoundsException unless 0 <= v < V

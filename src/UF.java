@@ -36,8 +36,16 @@
  *  <i>Algorithms, 4th Edition</i> by Robert Sedgewick and Kevin Wayne.
  */
 
+
+/**
+ * Supports: Given two nodes by their index numbers, return if they are are connected  (find)
+ * Supports: Given two nodes, connect them (union)
+ */
 public class UF {
+	                     // imagine the array subscript to be the component name 
     private int[] id;    // id[i] = parent of i
+    					 // Each entry in this array, represents a connected component
+    
     private int[] sz;    // sz[i] = number of objects in subtree rooted at i
     private int count;   // number of components
 
@@ -47,9 +55,10 @@ public class UF {
      */
     public UF(int N) {
         if (N < 0) throw new IllegalArgumentException();
-        count = N;
-        id = new int[N];
-        sz = new int[N];
+        count = N; //initially, each one is a separate component
+        id = new int[N]; //real array to note parents. 
+        sz = new int[N]; //helps to make a forest. 
+        				//Thereby keep any component height at check
         for (int i = 0; i < N; i++) {
             id[i] = i;
             sz[i] = 1;
@@ -60,10 +69,14 @@ public class UF {
      * Return the id of component corresponding to object p.
      * @throws java.lang.IndexOutOfBoundsException unless 0 <= p < N
      */
+ 
+    /*
+     * The root has itself as it's parent in the array.
+     */
     public int find(int p) {
         if (p < 0 || p >= id.length) throw new IndexOutOfBoundsException();
-        while (p != id[p])
-            p = id[p];
+        while (p != id[p]) // the current item is not the root
+            p = id[p]; // traverse and find
         return p;
     }
 
@@ -93,7 +106,8 @@ public class UF {
         int j = find(q);
         if (i == j) return;
 
-        // make smaller root point to larger one
+        // make smaller root point to larger one (so that the height is not increased)
+        // if the larger root points to the smaller one, the height would increase
         if   (sz[i] < sz[j]) { id[i] = j; sz[j] += sz[i]; }
         else                 { id[j] = i; sz[i] += sz[j]; }
         count--;

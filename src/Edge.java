@@ -12,6 +12,11 @@
  *  For additional documentation, see <a href="http://algs4.cs.princeton.edu/43mst">Section 4.3</a> of
  *  <i>Algorithms, 4th Edition</i> by Robert Sedgewick and Kevin Wayne.
  */
+
+/**
+ * From-To fields, and weight. As simle as it can be
+ * Note that from-to fields are marked by ints
+ */
 public class Edge implements Comparable<Edge> { 
 
     private final int v;
@@ -37,7 +42,7 @@ public class Edge implements Comparable<Edge> {
    /**
      * Return either endpoint of this edge.
      */
-    public int either() {
+    public int either() { //returns one of the endpoints
         return v;
     }
 

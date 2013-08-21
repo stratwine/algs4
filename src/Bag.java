@@ -40,6 +40,12 @@ import java.util.NoSuchElementException;
  *  For additional documentation, see <a href="http://algs4.cs.princeton.edu/13stacks">Section 1.3</a> of
  *  <i>Algorithms, 4th Edition</i> by Robert Sedgewick and Kevin Wayne.
  */
+
+/**
+ * Almost like for any ADT (abstract data structure), 'templating' is used
+ * So, any kind of item can be inserted.
+ * Supports add() but not remove()
+ */
 public class Bag<Item> implements Iterable<Item> {
     private int N;         // number of elements in bag
     private Node first;    // beginning of bag
@@ -75,6 +81,13 @@ public class Bag<Item> implements Iterable<Item> {
 
    /**
      * Add the item to the bag.
+     */
+    
+    /**
+     * Add an item to the Bag.
+     * The item is added as a LinkedList Node.
+     * More like a Stack implemented as a LinkedList. (first = latest added element)
+     * After adding increase the size of the Bag
      */
     public void add(Item item) {
         Node oldfirst = first;

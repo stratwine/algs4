@@ -34,24 +34,42 @@
  *
  *************************************************************************/
 
+/*
+ * An MST is found for an EdgeWeightedGraph
+ */
 public class KruskalMST {
     private double weight;  // weight of MST
-    private Queue<Edge> mst = new Queue<Edge>();  // edges in MST
+    private Queue<Edge> mst = new Queue<Edge>();  // edges in MST, results are stored here
 
     // Kruskal's algorithm
     public KruskalMST(EdgeWeightedGraph G) {
         // more efficient to build heap by passing array of edges
+    	//Let's use a MinPQ to extract the minimal weighted edge
         MinPQ<Edge> pq = new MinPQ<Edge>();
         for (Edge e : G.edges()) {
-            pq.insert(e);
+            pq.insert(e);  //insert all edges of the graph. without duplicates
         }
 
         // run greedy algorithm
         UF uf = new UF(G.V());
-        while (!pq.isEmpty() && mst.size() < G.V() - 1) {
+        while (!pq.isEmpty() && mst.size() < G.V() - 1) { //a graph with 5 vertices would have 4 edges in its MST
             Edge e = pq.delMin();
             int v = e.either();
             int w = e.other(v);
+            
+            /* Imagine with fingers.
+             * Make an L shape with index finger and thumb of left hand
+             * Connect the left hand index finger with the right hand's index finger
+             * Now there are three edges. The right-index-finger is connected to the left-thumb
+             * Should you add an edge from right thumb to left thumb ? No since, both these endpoints are already connected,
+             * and that creates a cycle             * 
+             */
+            
+            /*
+             * In short, if two vertices are connected in some way
+             * Adding another edge connecting these vertices would create a cycle
+             */
+            
             if (!uf.connected(v, w)) { // v-w does not create a cycle
                 uf.union(v, w);  // merge v and w components
                 mst.enqueue(e);  // add edge e to mst

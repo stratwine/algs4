@@ -31,11 +31,14 @@
  *  <i>Algorithms, 4th Edition</i> by Robert Sedgewick and Kevin Wayne.
  */
 
-
+/**
+ * Contains a Bag of edges. Each edge has an associated weight
+ *
+ */
 public class EdgeWeightedGraph {
-    private final int V;
-    private int E;
-    private Bag<Edge>[] adj;
+    private final int V; //number of Vertices
+    private int E; //number of edges
+    private Bag<Edge>[] adj; //instead of the usual ArrayList
     
    /**
      * Create an empty edge-weighted graph with V vertices.
@@ -68,6 +71,7 @@ public class EdgeWeightedGraph {
 
    /**
      * Create a weighted graph from input stream.
+     * 
      */
     public EdgeWeightedGraph(In in) {
         this(in.readInt());
@@ -139,6 +143,13 @@ public class EdgeWeightedGraph {
      * Return all edges in this graph as an Iterable.
      * To iterate over the edges in the graph, use foreach notation:
      * <tt>for (Edge e : G.edges())</tt>.
+     * 
+     */
+
+    
+    /*
+     * From each bag, get the edges and add to list.
+     * If already inserted, (e.other(v) < v) skip it
      */
     public Iterable<Edge> edges() {
         Bag<Edge> list = new Bag<Edge>();
@@ -150,7 +161,7 @@ public class EdgeWeightedGraph {
                 }
                 // only add one copy of each self loop
                 else if (e.other(v) == v) {
-                    if (selfLoops % 2 == 0) list.add(e);
+                    if (selfLoops % 2 == 0) list.add(e);     //TODO: Understand SelfLoops
                     selfLoops++;
                 }
             }

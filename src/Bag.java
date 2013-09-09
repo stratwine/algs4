@@ -46,6 +46,21 @@ import java.util.NoSuchElementException;
  * So, any kind of item can be inserted.
  * Supports add() but not remove()
  */
+
+/**
+ * Bag is a form of a LinkedList 
+ * Contains a Node Inner class
+ *            Contains item
+ *            Contains next
+ * The general properties about the collection are in the outer class (Bag)
+ * The general/common-useful properties:
+ *            numberOfElements |in the Bag
+ *            first            |how else are we going to access the rest of the list!
+ * 
+ * Note: tail is not maintained
+ *       Any addition is done to the head (using the first pointer)
+ *       
+ */
 public class Bag<Item> implements Iterable<Item> {
     private int N;         // number of elements in bag
     private Node first;    // beginning of bag

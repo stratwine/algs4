@@ -44,23 +44,28 @@ public class KMP {
 
         // build DFA from pattern
         int M = pat.length();
+
+        //dfa array is a lookup table for the next transition, given the 'character' and 'current-state'
+        //dfa is built from the pattern
+        //read: dfa[incomingCharacter][currentState]
+        dfa = new int[R][M];  //R possible characters, M possible states
         
-        dfa = new int[R][M];  //R possible inputs, M possible states 
-        
-        //dfa[65][2] means, if I am currently in State 2 and the incoming character is A, what state should this go to ?
-        //note that dfa is built based on the pattern
-        
-        dfa[pat.charAt(0)][0] = 1; //I am in the very first state (initial state) and receive 
-                                   //the first pattern character. Go to the next state.
-        
-          
-        for (int X = 0, j = 1; j < M; j++) {  
-        	   								//Start with fallback state X=0 initially
-        	 								//Have to update missing transitions for states 1 to the end of pattern
-        									//For j=0, dfa[pat.charAt(0)][0] = 1; takes care of success transition and the rest default to 0.
-        									//So we don't worry about 0th state, in this for loop
-           
-        	for (int c = 0; c < R; c++) 
+        //if I am currently in State 2 and the incoming character is A, what state should this go to ?
+        //that is given by dfa[65][2] i.e dfa['A'][2]
+
+        //I am in the very first state (initial state) and receive
+        //the first pattern character. Go to the next state.
+
+        dfa[pat.charAt(0)][0] = 1;
+
+        //For j=0, dfa[pat.charAt(0)][0] = 1; takes care of success transition and the rest default to 0.
+        //So we don't worry about 0th state, in this for loop
+
+        for (int X = 0, j = 1; j < M; j++) {
+        //Start with fallback state X=0 initially
+        //Have to update missing transitions for states 1 through end-of-pattern
+
+           	for (int c = 0; c < R; c++)
             { dfa[c][j] = dfa[c][X];  		// Copy mismatch cases. 
             } 								// Copy the whole column at X, to the current column position j
             							   
@@ -69,14 +74,17 @@ public class KMP {
         	Pattern:"abc" a at 0 transitions to 1, b at 1 transitions to 2, c at 2 transitions to 3
         	pat.chatAt(j) at state j should trigger a transition to state j+1
         	 */
-        	
-        	dfa[pat.charAt(j)][j] = j+1;    //For matching cases, update the cell values
-            							    //The cell value would be currentStateNo+1. So j+1
-            								
-        							
-        									//If I had, received the same character at the fallback state, where would I have gone ? 
-        									//That's the new fallback state.
-            X = dfa[pat.charAt(j)][X];      // Update restart state. 
+
+            //For matching cases, override the cell values
+            //The cell value would be currentStateNo+1. So j+1
+
+            dfa[pat.charAt(j)][j] = j+1;
+
+            //Now finally change the fallback state
+            //If I had, received the same character at the fallback state, where would I have gone ?
+        	//That's the new fallback state.
+
+            X = dfa[pat.charAt(j)][X];      // Update restart state.
         } 
     } 
 

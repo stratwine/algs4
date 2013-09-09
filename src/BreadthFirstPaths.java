@@ -26,6 +26,25 @@
  *
  *************************************************************************/
 
+/**
+ * There are a lot of fields which we feel would be useful, if it were present in the Graph class
+ * eg: marked   | was this vertex already visited, is it reachable from the BFS(v)
+ * 
+ * But well, we do not have such a boolean flag in each vertex
+ * Remember: We do not have a vertex as a 'Vertex' class but as a mere number
+ * 
+ * So this will have to be stored in a separate array.
+ * We create such arrays in this class
+ * 
+ * edgeTo | how did I reach this vertex ? From which vertex did I reach here ?
+ * distTo | what's the sortest distance (while doing a bfs(v)) to this vertex ?
+ * 
+ * Constructor:
+ *   Take a Graph and a BFS source vertex
+ *   Create marked[],edgeTo[],distTo[] arrays all of size G.V()
+ *   And invoke away the bfs call. Why wait :)
+ */
+
 public class BreadthFirstPaths {
     private static final int INFINITY = Integer.MAX_VALUE;
     private boolean[] marked;  // marked[v] = is there an s-v path
@@ -52,25 +71,62 @@ public class BreadthFirstPaths {
     }
 
 
-    // BFS from single soruce
+    // BFS from single source
+    
     /**
      *  On each adjacent vertex, 
      *     update the marked[w],edgeTo[w],distTo[w] and then add to queue
      *     How do I trace back the path at the end ?
-     *     Take the edgesTo[searchedVertex] and go through it till end. That gives the path taken
+     *     Take the edgesTo[w] and go through it till sourceVertex s. That gives the path taken
      */
+    
+    
+    
+    /*
+     * BFS
+     * Initialization Part:
+     *   All distances are initialized to INFINITY
+     *   Un-explored | non-reachable vertices stay with INFINITY at the end
+     *   Distance for s to s is 0
+     *   Source is definitely visited. So that's marked
+     *   We definitely need a Queue. So create a Queue
+     *   Start with the source added the queue
+     *   
+     * Traversal Part:
+     *   As long as the queue is not empty
+     *   Dequeue
+     *   For each dequed vertex, we find the adjacent vertices and add them to the queue
+     *   But wait ! Before adding to the queue, there are few fields to be updated
+     *     Update distTo[w] as dist[v]+1
+     *     Update edgeTo[w] with v
+     *     Update marked[w] with true
+     *   
+     *   This continues until all reachable vertices are visited, level by level
+     *   Useful: In maze, to find the reachability (connected or not)
+     * 
+     * Finally: Check through marked to see if a vertex is reachable or not
+     *          Traverse backwards from edgeTo to find the path taken
+     *          distTo gives number of nodes between the source and that vertex
+     * 
+     * For multiple sources:
+     *   Do the same as above for a Collection of sources
+     *   But : Skip the vertices already marked 
+     *         (Don't add them to the queue)
+     *  
+     */
+    
     private void bfs(Graph G, int s) {
         Queue<Integer> q = new Queue<Integer>();
-        for (int v = 0; v < G.V(); v++) distTo[v] = INFINITY; //initialize all distances as INFINITY
-        distTo[s] = 0; // well known, distance to itself is initialized with 0
+        for (int v = 0; v < G.V(); v++) distTo[v] = INFINITY; 
+        distTo[s] = 0; 
         marked[s] = true;
         q.enqueue(s);
 
         while (!q.isEmpty()) {
             int v = q.dequeue();
-            for (int w : G.adj(v)) { //returns a Bag<Integer>. But as for as for-loop is concerned, returns an Iterable
+            for (int w : G.adj(v)) { 
                 if (!marked[w]) {
-                    edgeTo[w] = v; // how did I reach w ? by taking an edge from v to w edgesTo[w] gives the source taken to reach w
+                    edgeTo[w] = v;
                     distTo[w] = distTo[v] + 1;
                     marked[w] = true;
                     q.enqueue(w);

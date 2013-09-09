@@ -23,6 +23,16 @@
  *
  *************************************************************************/
 
+/**
+ * Not very different from BreadthFirstSearch for undirected Graph
+ * Here the adjacency list is different
+ *   For every v-->w connection, only the Bag at v contains w. Not vice-versa
+ *   This does not change anything in the functionality
+ *   Use the same set of arrays and track it all (distTo, edgeTo, marked) depending upon th eneeds
+ *   
+ */
+
+
 public class BreadthFirstDirectedPaths {
     private static final int INFINITY = Integer.MAX_VALUE;
     private boolean[] marked;  // marked[v] = is there an s->v path?

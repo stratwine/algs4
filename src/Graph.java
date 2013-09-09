@@ -51,6 +51,23 @@
  * Then we would have 7 bags. Connected countries are marked by edges
  * There is no separate Vertex class
  */
+
+/**
+ * Absolutely necessary: No of vertices in the Graph.
+ * There may be any number of connections
+ * -> There may be any number of edges
+ * This adjacency list contains Bag<Integer>.
+ * The adjacency list could as well contain Set<Integer>
+ * 
+ * What's the significance of the 'Integer' here ?
+ * Vertices are named by numbers
+ * 
+ * addEdge is supported. Requires two parameters 
+ * Two vertices that need the connection
+ * Take the Collection correponding to v. add w to that
+ * Take the Collection corresponding to w. add v to that
+ */
+
 public class Graph {
     private final int V;
     private int E;
@@ -61,6 +78,12 @@ public class Graph {
     							// Infact, Bag is itself implemented with a self referential next node - making it a linked-list
     							//It differs from linked list in that, it does not allow to remove. 
     							// Inserts always at head. (this implementation)
+
+       //Works when the vertices names are numbers (use array subscript)
+       //What if I wanted each vertex to be named as a String ?
+       //Adjacency matrix won't help
+       //Still possible to create an adjacency list
+       //HashMap<String,LinkedList<String>> ?
    /**
      * Create an empty graph with V vertices.
      * @throws java.lang.IllegalArgumentException if V < 0

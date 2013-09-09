@@ -40,6 +40,15 @@ import java.util.NoSuchElementException;
  *  <i>Algorithms, 4th Edition</i> by Robert Sedgewick and Kevin Wayne.
  */
 
+/**
+ * Pretty much the same as a normal Graph
+ * In OO terms, gives an extra 'type' and that clarifies the nature of the graph
+ * But since this is a directed graph, addEdge(v,w) method varies
+ *    This one only adds w to the v's Bag. 
+ *    Note: every time we add an edge, we also increment E
+ *    I
+ */
+
 public class Digraph {
     private final int V;
     private int E;

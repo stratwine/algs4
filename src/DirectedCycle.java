@@ -16,6 +16,15 @@
  *
  *************************************************************************/
 
+/**
+ * This class is written over a dfs implementation
+ * Before doing recursive call,
+ *    mark it as visited
+ *    remember that this vertex is in the current call stack (by storing it in a onStack[] )
+ *    store the path (for backtracking) in edgeTo
+ */
+
+
 public class DirectedCycle {
     private boolean[] marked;        // marked[v] = has vertex v been marked?
     private int[] edgeTo;            // edgeTo[v] = previous vertex on path to v
@@ -26,6 +35,28 @@ public class DirectedCycle {
         marked  = new boolean[G.V()];
         onStack = new boolean[G.V()];
         edgeTo  = new int[G.V()];
+        
+        /*
+         * Do a DFS starting from each vertex (if it is previously not visited)
+         * 
+         *    a-->b--->c--->d-->e
+         *          f--->g--|
+         * 
+         *   dfs(G,a) marks a,b,c,d,e
+         *   dfs(G,f) marks f,g
+         *          then it checks that d is already marked
+         *          should it say a cycle exists? No
+         *    
+         *   So introduce something that checks: isInCurrentRecursiveStack(v)
+         *   Ideas:  1) In the for-loop, before each dfs call, clear this HashMap/Array
+         *           2) Use a stack, and clear as and when, the recursive call ends
+         *           
+         *   TakeAway: marked is not the real-way to say if there's a cycle
+         *             It does not take into account the above diagram
+         *           
+         *             So use an extra 'onStack' variable
+         */
+        
         for (int v = 0; v < G.V(); v++)
             if (!marked[v]) dfs(G, v);
     }

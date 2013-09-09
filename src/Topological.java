@@ -25,6 +25,21 @@
  *
  *************************************************************************/
 
+
+/**
+ * Now here we have an encapsulation of the algorithm, in a Class !
+ * How cool is that !
+ * 
+ * Topological Sort: Requires a Directed Graph as input
+ * 					 And we want the order of vertices.
+ *                   So an Iterable is best suited for this
+ *                   
+ *              Also have to check:
+ *                   Is there a cycle ?
+ *                   If there's a cycle, then no topo order exists
+ *                   So, do a linear one-time search for a Cycle
+ */
+
 public class Topological {
     private Iterable<Integer> order;    // topological order
 
